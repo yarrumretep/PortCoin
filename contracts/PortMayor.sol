@@ -26,6 +26,10 @@ contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
     EventCreated(publicKey);
   }
 
+  function isEventActive(address publicKey) view public returns (bool) {
+    return active[publicKey];
+  }
+
   function endEvent(address publicKey) onlyOwner public {
     active[publicKey] = false;
     EventEnded(publicKey);

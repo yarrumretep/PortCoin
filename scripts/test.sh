@@ -5,7 +5,7 @@ output=$(nc -z localhost 8547; echo $?)
 if [ ! $trpc_running ]; then
   echo "Starting our own testrpc node instance"
   # we give each account 1M ether, needed for high-value tests
-  ganashe-cli \
+  ganache-cli \
     --port 8547 \
     --account="0x2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501200,1000000000000000000000000"  \
     --account="0x2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501201,1000000000000000000000000"  \

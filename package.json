@@ -12,11 +12,11 @@
     "test": "./scripts/test.sh"
   },
   "dependencies": {
-    "argv": "0.0.2",
+    "argv": "^0.0.2",
     "ethereumjs-wallet": "^0.6.0",
     "expect": "^21.2.1",
     "truffle-contract": "^3.0.0",
-    "truffle-wallet-provider": "0.0.5",
+    "truffle-wallet-provider": "^0.0.5",
     "web3": "^1.0.0-beta.26",
     "zeppelin-solidity": "^1.4.0"
   }

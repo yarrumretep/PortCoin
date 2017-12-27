@@ -44,7 +44,6 @@ contract('PortCoin', function(accounts) {
             .then(result => expect(result).toBe(true))
             .then(() => mayor.endEvent(eventAddress.getAddressString()))
             .then(result => {
-                console.log(JSON.stringify(result, null, "    "));
                 expect(result.logs[0].event).toBe('EventEnded');
                 expect(result.logs[0].args.eventAddress).toBe(eventAddress.getAddressString());
             })
@@ -53,9 +52,7 @@ contract('PortCoin', function(accounts) {
     });
 
     it('should issue coins and not allow the same ticket multiple times', () => {
-        //console.log(mayor)
         let eventAddress = wallet.generate();
-        console.log("ADDRESS: " + eventAddress.getAddressString());
         return mayor.createEvent(eventAddress.getAddressString())
             .then(() => {
                 var ticket = "1";
@@ -76,10 +73,8 @@ contract('PortCoin', function(accounts) {
             .catch((err) => expect(err.message).toBe("VM Exception while processing transaction: revert"));
     });
 
-    it('should ', () => {
-        //console.log(mayor)
+    it('shouldn\'t allow ticket use after event is closed', () => {
         let eventAddress = wallet.generate();
-        console.log("ADDRESS: " + eventAddress.getAddressString());
         return mayor.createEvent(eventAddress.getAddressString())
             .then(() => {
                 var ticket = "1";
@@ -91,8 +86,9 @@ contract('PortCoin', function(accounts) {
             .then((response) => {
                 expect(JSON.stringify(response)).toBe("\"1\"");
             })
+            .then(() => mayor.endEvent(eventAddress.getAddressString()))
             .then(() => {
-                var ticket = "1";
+                var ticket = "2";
                 var signature = web3.eth.accounts.sign(ticket, eventAddress.getPrivateKeyString());
                 var message = web3.utils.sha3("\x19Ethereum Signed Message:\n" + ticket.length + ticket);
                 return mayor.attend(message, signature.signature, { from: accounts[1] });

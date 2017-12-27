@@ -22,7 +22,7 @@ networks = {
   }
 }
 
-var key = fs.readFileSync('/Users/pete/.demo.private.key', 'utf8');
+var key = fs.readFileSync('/home/nate/test.key', 'utf8');
 var wallet = Wallet.fromPrivateKey(Buffer.from(key.substring(2), 'hex'));
 var nodes = {
   'mainnet': 'https://mainnet.infura.io/bOyWfPGcs8jj2g9UXNYr',

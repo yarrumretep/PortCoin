@@ -11,7 +11,7 @@ process.argv.forEach((arg,i) => {
   }
 })
 
-var maxgas = 4612388;
+var maxgas = 461238; // 8
 
 networks = {
   development: {
@@ -24,6 +24,7 @@ networks = {
 
 var key = fs.readFileSync('/Users/pete/.demo.private.key', 'utf8');
 var wallet = Wallet.fromPrivateKey(Buffer.from(key.substring(2), 'hex'));
+console.log("Using address: " + wallet.getAddressString());
 var nodes = {
   'mainnet': 'https://mainnet.infura.io/bOyWfPGcs8jj2g9UXNYr',
   'kovan': 'https://kovan.infura.io/bOyWfPGcs8jj2g9UXNYr'

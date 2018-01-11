@@ -28,6 +28,7 @@ contract('PortCoin', function(accounts) {
     });
 
     it('should deploy', () => {
+        console.log("ADDRESS: " + portcoin.address);
         return portcoin.symbol().then(symbol => expect(symbol).toBe('PORT'));
     });
 

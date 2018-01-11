@@ -16,7 +16,7 @@ var maxgas = 4612388;
 networks = {
   development: {
     host: "localhost",
-    port: 8547,
+    port: 9545,
     network_id: "*", // Match any network id
     gas: maxgas
   }
@@ -43,8 +43,12 @@ function addNetwork(name) {
 }
 if(network) {
   addNetwork(network);
+} else {
+  console.log("Configuring network: development");
+  network = 'development';
 }
 
 module.exports = {
+  network,
   networks: networks
 };

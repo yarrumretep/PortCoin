@@ -14,7 +14,7 @@ contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
   mapping(address => mapping(address => bool)) seen;
   mapping(address => mapping(bytes32 => bool)) ticketUsed;
 
-  event Attend(address attendee, address eventAddress);
+  event Attend(address attendee, bytes32 ticket, address eventAddress);
   event EventCreated(address eventAddress);
   event EventEnded(address eventAddress);
 
@@ -56,7 +56,7 @@ contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
     seen[eventAddress][msg.sender] = true;
     ticketUsed[eventAddress][ticket]=true;
     coin.issue(msg.sender, 1);
-    Attend(msg.sender, eventAddress);
+    Attend(msg.sender, ticket, eventAddress);
   }
 
 }

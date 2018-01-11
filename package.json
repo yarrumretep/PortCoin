@@ -9,14 +9,16 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "test": "./scripts/test.sh"
+    "test": "./scripts/test.sh",
+    "create-tickets": "node ./scripts/createTickets"
   },
   "dependencies": {
-    "argv": "0.0.2",
+    "argv": "^0.0.2",
     "ethereumjs-wallet": "^0.6.0",
     "expect": "^21.2.1",
-    "truffle-contract": "^3.0.0",
-    "truffle-wallet-provider": "0.0.5",
+    "truffle-contract": "^3.0.1",
+    "truffle-wallet-provider": "^0.0.5",
+    "uuid": "^3.1.0",
     "web3": "^1.0.0-beta.26",
     "zeppelin-solidity": "^1.4.0"
   }

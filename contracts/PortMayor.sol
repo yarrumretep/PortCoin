@@ -10,8 +10,7 @@ import './PortCoin.sol';
 contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
 
   PortCoin coin;
-  mapping(address => mapping(address => bool)) seen;
-  mapping(address => uint256) ticketsClaimed;
+  mapping(address => uint256) tickets;
 
   event Attend(address attendee, uint256 ticket, address eventAddress);
   event EventCreated(address eventAddress);
@@ -25,20 +24,15 @@ contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
   }
 
   function isEvent(address eventAddress) view public returns (bool) {
-    return seen[eventAddress][owner];
+    return tickets[eventAddress] > 0;
   }
 
-  function isTicketUsed(address eventAddress, uint8 ticket) view public returns (bool){
-    uint256 shifted = uint256(2) ** ticket;
-    return (ticketsClaimed[eventAddress] & shifted) > 0;
-  }
-
-  function attended(address eventAddress, address who) view public returns (bool){
-    return seen[eventAddress][who];
+  function isValidTicket(address eventAddress, uint8 ticket) view public returns (bool){
+    return (tickets[eventAddress] & (uint256(2) ** ticket)) > 0;
   }
 
   function createEvent(address eventAddress) onlyOwner public {
-    seen[eventAddress][owner] = true;
+    tickets[eventAddress] = uint256(0) - 1; // fill with 1s
     EventCreated(eventAddress);
   }
 
@@ -53,11 +47,8 @@ contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
   function attend(uint8 ticket, bytes signature) public {
       // Docs say "\x19Ethereum Signed Message:\n"+message.length + message is how web3.eth.accounts.sign formats the message
     address eventAddress = ECRecovery.recover(keccak256("\x19Ethereum Signed Message:\n3",stringify(ticket)),signature);
-    require(isEvent(eventAddress));
-    require(!isTicketUsed(eventAddress, ticket));
-    require(!attended(eventAddress, msg.sender));
-    uint256 shifted = uint256(2) ** ticket;
-    ticketsClaimed[eventAddress] = ticketsClaimed[eventAddress] | shifted;
+    require(isValidTicket(eventAddress, ticket));
+    tickets[eventAddress] = tickets[eventAddress] ^ (uint256(2) ** ticket);
     coin.issue(msg.sender, 1);
     Attend(msg.sender, ticket, eventAddress);
   }

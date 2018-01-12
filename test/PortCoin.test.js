@@ -53,25 +53,36 @@ contract('PortCoin', function(accounts) {
 
     it('should issue coins and not allow the same ticket multiple times', () => {
       let eventAddress = wallet.generate();
-        return mayor.createEvent(eventAddress.getAddressString())
+      var signature = web3.eth.accounts.sign("001", eventAddress.getPrivateKeyString());
+      var sig2 = web3.eth.accounts.sign("002", eventAddress.getPrivateKeyString());
+
+      return mayor.createEvent(eventAddress.getAddressString())
         .then(()=> mayor.isEvent(eventAddress.getAddressString()))
         .then(result => expect(result).toBe(true))
-        .then(() => mayor.isTicketUsed(eventAddress.getAddressString(), 1))
-        .then(result => expect(result).toBe(false))
-        .then(()=> mayor.attended(eventAddress.getAddressString(), accounts[1]))
-        .then(result => expect(result).toBe(false))
-        .then(() => {
-          var ticket = 1;
-          var signature = web3.eth.accounts.sign(("00" + ticket).slice(-3), eventAddress.getPrivateKeyString());
-          return mayor.attend(ticket, signature.signature, { from: accounts[1] });
-        })
+        .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 1))
+        .then(result => expect(result).toBe(true))
+        .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
+        .then(result => expect(result).toBe(true))
+
+        .then(() => mayor.attend(1, signature.signature, { from: accounts[1] }))
+        .then(result => console.log("GAS: " + result.receipt.gasUsed))
         .then(() => portcoin.balanceOf(accounts[1]) )
         .then((response) => expect(+response).toBe(1))
-        .then(() => {
-          var ticket = 1;
-          var signature = web3.eth.accounts.sign(("00" + ticket).slice(-3), eventAddress.getPrivateKeyString());
-          return mayor.attend(ticket, signature.signature);
-        })
+        .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 1))
+        .then(result => expect(result).toBe(false))
+        .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
+        .then(result => expect(result).toBe(true))
+
+        .then(() => mayor.attend(2, sig2.signature, { from: accounts[1] }))
+        .then(result => console.log("GAS: " + result.receipt.gasUsed))
+        .then(() => portcoin.balanceOf(accounts[1]) )
+        .then((response) => expect(+response).toBe(2))
+        .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 1))
+        .then(result => expect(result).toBe(false))
+        .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
+        .then(result => expect(result).toBe(false))
+
+        .then(() => mayor.attend(1, signature.signature))
         .then(()=>expect(true).toBe(false))
         .catch(error => expect(error.message).toBe("VM Exception while processing transaction: revert"))
     });

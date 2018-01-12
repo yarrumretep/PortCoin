@@ -13,7 +13,7 @@ if (args.targets.length < 2) {
 
 
 for (var ticketNum = 0; ticketNum < args.targets[0]; ticketNum++) {
-    var ticket = "" + ticketNum;
+    var ticket = ("00" + ticketNum).slice(3);
     console.log("Ticket: " + web3.utils.sha3("\x19Ethereum Signed Message:\n" + ticket.length + ticket));
     console.log("Signature: " + web3.eth.accounts.sign(ticket, args.targets[1]).signature);
     if (ticketNum !== args.targets[0]-1) {

@@ -10,24 +10,24 @@ import './PortCoin.sol';
 contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
 
   PortCoin coin;
-  mapping(address => bool) active;
+  mapping(address => bool) activeEvents;
   mapping(address => mapping(address => bool)) seen;
-  mapping(address => mapping(bytes32 => bool)) ticketUsed;
+  mapping(address => uint256) ticketsClaimed;
 
-  event Attend(address attendee, bytes32 ticket, address eventAddress);
+  event Attend(address attendee, uint256 ticket, address eventAddress);
   event EventCreated(address eventAddress);
-  event EventEnded(address eventAddress);
 
   function PortMayor(address portCoinAddress) public {
     coin = PortCoin(portCoinAddress);
   }
 
   function isEventActive(address eventAddress) view public returns (bool){
-    return active[eventAddress];
+    return activeEvents[eventAddress];
   }
 
-  function isTicketUsed(address eventAddress, bytes32 ticket) view public returns (bool){
-    return ticketUsed[eventAddress][ticket];
+  function isTicketUsed(address eventAddress, uint256 ticket) view public returns (bool){
+    uint256 shifted = uint256(0x1 * uint256(2) ** ticket);
+    return (ticketsClaimed[eventAddress] & shifted) > 1;
   }
 
   function attended(address eventAddress, address who) view public returns (bool){
@@ -39,24 +39,22 @@ contract PortMayor is Ownable, HasNoEther, CanReclaimToken {
   }
 
   function createEvent(address eventAddress) onlyOwner public {
-    active[eventAddress] = true;
+    activeEvents[eventAddress] = true;
     EventCreated(eventAddress);
   }
 
-  function endEvent(address eventAddress) onlyOwner public {
-    active[eventAddress] = false;
-    EventEnded(eventAddress);
-  }
-
-  function attend(bytes32 ticket, bytes signature) public {
-    address eventAddress = ECRecovery.recover(ticket,signature);
-    require(active[eventAddress]);
-    require(!ticketUsed[eventAddress][ticket]);
+  function attend(uint256 ticket, bytes signature) public {
+    // Docs say "\x19Ethereum Signed Message:\n"+message.length + message is how web3.eth.accounts.sign formats the message
+    address eventAddress = ECRecovery.recover(keccak256("\x19Ethereum Signed Message:\n32",keccak256(ticket)),signature);
+    require(eventAddress!=0x0);
+    require(isEventActive(eventAddress));
+    require(ticket<256);
+    require(!isTicketUsed(eventAddress, ticket));
     require(!seen[eventAddress][msg.sender]);
-    seen[eventAddress][msg.sender] = true;
-    ticketUsed[eventAddress][ticket]=true;
+    uint256 shifted = uint256(0x1 * uint256(2) ** ticket);
+    ticketsClaimed[eventAddress]=ticketsClaimed[eventAddress] | shifted;
     coin.issue(msg.sender, 1);
     Attend(msg.sender, ticket, eventAddress);
-  }
 
+  }
 }

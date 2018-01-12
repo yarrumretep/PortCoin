@@ -11,8 +11,6 @@ var ECRecovery = artifacts.require('zeppelin-solidity/contracts/ECRecovery.sol')
 contract('PortCoin', function(accounts) {
     var portcoin;
     var mayor;
-    var ecRecover;
-
     beforeEach(() => {
         return PortCoin.new()
             .then((instance) => portcoin = instance)
@@ -26,13 +24,10 @@ contract('PortCoin', function(accounts) {
                 portcoin.electNewMayor(mayor.address);
             });
     });
-
     it('should deploy', () => {
-        console.log("ADDRESS: " + portcoin.address);
         return portcoin.symbol().then(symbol => expect(symbol).toBe('PORT'));
     });
-
-    it('should create and end event', () => {
+    it('should create event', () => {
         let eventAddress = wallet.generate();
         return Promise.resolve().then(() => mayor.isEventActive(eventAddress.getAddressString()))
             .then(result => expect(result).toBe(false))
@@ -42,59 +37,27 @@ contract('PortCoin', function(accounts) {
                 expect(result.logs[0].args.eventAddress).toBe(eventAddress.getAddressString());
             })
             .then(() => mayor.isEventActive(eventAddress.getAddressString()))
-            .then(result => expect(result).toBe(true))
-            .then(() => mayor.endEvent(eventAddress.getAddressString()))
-            .then(result => {
-                expect(result.logs[0].event).toBe('EventEnded');
-                expect(result.logs[0].args.eventAddress).toBe(eventAddress.getAddressString());
-            })
-            .then(() => mayor.isEventActive(eventAddress.getAddressString()))
-            .then(result => expect(result).toBe(false));
+            .then(result => expect(result).toBe(true));
     });
-
     it('should issue coins and not allow the same ticket multiple times', () => {
         let eventAddress = wallet.generate();
+        console.log(eventAddress.getAddressString());
         return mayor.createEvent(eventAddress.getAddressString())
             .then(() => {
-                var ticket = "1";
-                var signature = web3.eth.accounts.sign(ticket, eventAddress.getPrivateKeyString());
-                var message = web3.utils.soliditySha3("\x19Ethereum Signed Message:\n" + ticket.length + ticket);
-                return mayor.attend(message, signature.signature);
+                var ticket = 1;
+                var signature = web3.eth.accounts.sign(web3.utils.numberToHex(web3.utils.soliditySha3(ticket)).slice(2), eventAddress.getPrivateKeyString());
+                console.log(signature);
+                return mayor.attend(ticket, signature.signature);
             })
-            .then(() => portcoin.balanceOf(accounts[0]))
+            .then((response) => { console.log(JSON.stringify(response)); return portcoin.balanceOf(accounts[0]); })
             .then((response) => {
                 expect(JSON.stringify(response)).toBe("\"1\"");
             })
             .then(() => {
-                var ticket = "1";
-                var signature = web3.eth.accounts.sign(ticket, eventAddress.getPrivateKeyString());
-                var message = web3.utils.sha3("\x19Ethereum Signed Message:\n" + ticket.length + ticket);
-                return mayor.attend(message, signature.signature, { from: accounts[1] });
-            })
-            .catch((err) => expect(err.message).toBe("VM Exception while processing transaction: revert"));
+                var ticket = 1;
+                var signature = web3.eth.accounts.sign(web3.utils.numberToHex(web3.utils.soliditySha3(ticket)).slice(2), eventAddress.getPrivateKeyString());
+                console.log(signature);
+                return mayor.attend(ticket, signature.signature);
+            });
     });
-
-    it('shouldn\'t allow ticket use after event is closed', () => {
-        let eventAddress = wallet.generate();
-        return mayor.createEvent(eventAddress.getAddressString())
-            .then(() => {
-                var ticket = "1";
-                var signature = web3.eth.accounts.sign(ticket, eventAddress.getPrivateKeyString());
-                var message = web3.utils.soliditySha3("\x19Ethereum Signed Message:\n" + ticket.length + ticket);
-                return mayor.attend(message, signature.signature);
-            })
-            .then(() => portcoin.balanceOf(accounts[0]))
-            .then((response) => {
-                expect(JSON.stringify(response)).toBe("\"1\"");
-            })
-            .then(() => mayor.endEvent(eventAddress.getAddressString()))
-            .then(() => {
-                var ticket = "2";
-                var signature = web3.eth.accounts.sign(ticket, eventAddress.getPrivateKeyString());
-                var message = web3.utils.sha3("\x19Ethereum Signed Message:\n" + ticket.length + ticket);
-                return mayor.attend(message, signature.signature, { from: accounts[1] });
-            })
-            .catch((err) => expect(err.message).toBe("VM Exception while processing transaction: revert"));
-    });
-
 });

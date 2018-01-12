@@ -7,17 +7,13 @@ const Web3 = require('web3');
 const web3 = new Web3();
 var PortCoin = artifacts.require("./PortCoin.sol");
 var PortMayor = artifacts.require('./PortMayor.sol');
-var ECRecovery = artifacts.require('zeppelin-solidity/contracts/ECRecovery.sol');
+
 contract('PortCoin', function(accounts) {
     var portcoin;
     var mayor;
     beforeEach(() => {
         return PortCoin.new()
             .then((instance) => portcoin = instance)
-            .then(() => ECRecovery.deployed())
-            .then((instance) => {
-                PortMayor.link(ECRecovery, instance.adress);
-            })
             .then(() => PortMayor.new(portcoin.address))
             .then((instance) => {
                 mayor = instance;

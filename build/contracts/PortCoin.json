@@ -308,7 +308,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 720,
+          "SourceUnit": 732,
           "absolutePath": "zeppelin-solidity/contracts/token/ERC20.sol",
           "file": "zeppelin-solidity/contracts/token/ERC20.sol",
           "scope": 261,
@@ -324,16 +324,16 @@
       {
         "attributes": {
           "contractDependencies": [
-            719,
-            748
+            731,
+            760
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
             260,
-            719,
-            748
+            731,
+            760
           ],
           "name": "PortCoin",
           "scope": 261
@@ -350,7 +350,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "ERC20",
-                  "referencedDeclaration": 719,
+                  "referencedDeclaration": 731,
                   "type": "contract ERC20"
                 },
                 "id": 3,
@@ -780,7 +780,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 822,
+                                  "referencedDeclaration": 834,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -860,7 +860,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 825,
+                              "referencedDeclaration": 837,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -901,7 +901,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 822,
+                                      "referencedDeclaration": 834,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -1386,7 +1386,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 723,
+                              "referencedDeclaration": 735,
                               "type": "uint256",
                               "value": "totalSupply"
                             },
@@ -1534,7 +1534,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 747,
+                              "referencedDeclaration": 759,
                               "type": "function (address,address,uint256)",
                               "value": "Transfer"
                             },
@@ -1646,7 +1646,7 @@
               "payable": false,
               "scope": 260,
               "stateMutability": "view",
-              "superFunction": 730,
+              "superFunction": 742,
               "visibility": "public"
             },
             "children": [
@@ -1793,7 +1793,7 @@
               "payable": false,
               "scope": 260,
               "stateMutability": "nonpayable",
-              "superFunction": 739,
+              "superFunction": 751,
               "visibility": "public"
             },
             "children": [
@@ -1919,7 +1919,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 825,
+                              "referencedDeclaration": 837,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -1984,7 +1984,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 822,
+                                          "referencedDeclaration": 834,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -2166,7 +2166,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 822,
+                                      "referencedDeclaration": 834,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -2244,7 +2244,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 747,
+                              "referencedDeclaration": 759,
                               "type": "function (address,address,uint256)",
                               "value": "Transfer"
                             },
@@ -2270,7 +2270,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 822,
+                                  "referencedDeclaration": 834,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -2370,7 +2370,7 @@
               "payable": false,
               "scope": 260,
               "stateMutability": "nonpayable",
-              "superFunction": 710,
+              "superFunction": 722,
               "visibility": "public"
             },
             "children": [
@@ -2533,7 +2533,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 822,
+                                          "referencedDeclaration": 834,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -2630,7 +2630,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 718,
+                              "referencedDeclaration": 730,
                               "type": "function (address,address,uint256)",
                               "value": "Approval"
                             },
@@ -2656,7 +2656,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 822,
+                                  "referencedDeclaration": 834,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -2756,7 +2756,7 @@
               "payable": false,
               "scope": 260,
               "stateMutability": "view",
-              "superFunction": 690,
+              "superFunction": 702,
               "visibility": "public"
             },
             "children": [
@@ -2958,7 +2958,7 @@
               "payable": false,
               "scope": 260,
               "stateMutability": "nonpayable",
-              "superFunction": 701,
+              "superFunction": 713,
               "visibility": "public"
             },
             "children": [
@@ -3110,7 +3110,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 825,
+                              "referencedDeclaration": 837,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -3204,7 +3204,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 822,
+                                          "referencedDeclaration": 834,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -3279,7 +3279,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 825,
+                              "referencedDeclaration": 837,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -3618,7 +3618,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 822,
+                                      "referencedDeclaration": 834,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -3696,7 +3696,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 747,
+                              "referencedDeclaration": 759,
                               "type": "function (address,address,uint256)",
                               "value": "Transfer"
                             },
@@ -3825,5 +3825,5 @@
     }
   },
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-01-11T19:12:25.187Z"
+  "updatedAt": "2018-01-12T14:42:15.913Z"
 }

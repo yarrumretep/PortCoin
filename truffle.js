@@ -11,7 +11,7 @@ process.argv.forEach((arg,i) => {
   }
 })
 
-var maxgas = 461238; // 8
+var maxgas = 4612388;
 
 networks = {
   development: {

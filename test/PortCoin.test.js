@@ -29,35 +29,50 @@ contract('PortCoin', function(accounts) {
     });
     it('should create event', () => {
         let eventAddress = wallet.generate();
-        return Promise.resolve().then(() => mayor.isEventActive(eventAddress.getAddressString()))
+        return Promise.resolve().then(() => mayor.isEvent(eventAddress.getAddressString()))
             .then(result => expect(result).toBe(false))
             .then(() => mayor.createEvent(eventAddress.getAddressString()))
             .then(result => {
                 expect(result.logs[0].event).toBe('EventCreated');
                 expect(result.logs[0].args.eventAddress).toBe(eventAddress.getAddressString());
             })
-            .then(() => mayor.isEventActive(eventAddress.getAddressString()))
+            .then(() => mayor.isEvent(eventAddress.getAddressString()))
             .then(result => expect(result).toBe(true));
     });
+
+    it('should stringify properly', () => {
+      return mayor.stringify(0)
+      .then(result => expect(result).toBe('000'))
+      .then(()=>mayor.stringify(1))
+      .then(result => expect(result).toBe('001'))
+      .then(()=>mayor.stringify(12))
+      .then(result => expect(result).toBe('012'))
+      .then(()=>mayor.stringify(123))
+      .then(result => expect(result).toBe('123'))
+    })
+
     it('should issue coins and not allow the same ticket multiple times', () => {
-        let eventAddress = wallet.generate();
-        console.log(eventAddress.getAddressString());
+      let eventAddress = wallet.generate();
         return mayor.createEvent(eventAddress.getAddressString())
-            .then(() => {
-                var ticket = 1;
-                var signature = web3.eth.accounts.sign(web3.utils.numberToHex(web3.utils.soliditySha3(ticket)).slice(2), eventAddress.getPrivateKeyString());
-                console.log(signature);
-                return mayor.attend(ticket, signature.signature);
-            })
-            .then((response) => { console.log(JSON.stringify(response)); return portcoin.balanceOf(accounts[0]); })
-            .then((response) => {
-                expect(JSON.stringify(response)).toBe("\"1\"");
-            })
-            .then(() => {
-                var ticket = 1;
-                var signature = web3.eth.accounts.sign(web3.utils.numberToHex(web3.utils.soliditySha3(ticket)).slice(2), eventAddress.getPrivateKeyString());
-                console.log(signature);
-                return mayor.attend(ticket, signature.signature);
-            });
+        .then(()=> mayor.isEvent(eventAddress.getAddressString()))
+        .then(result => expect(result).toBe(true))
+        .then(() => mayor.isTicketUsed(eventAddress.getAddressString(), 1))
+        .then(result => expect(result).toBe(false))
+        .then(()=> mayor.attended(eventAddress.getAddressString(), accounts[1]))
+        .then(result => expect(result).toBe(false))
+        .then(() => {
+          var ticket = 1;
+          var signature = web3.eth.accounts.sign(("00" + ticket).slice(-3), eventAddress.getPrivateKeyString());
+          return mayor.attend(ticket, signature.signature, { from: accounts[1] });
+        })
+        .then(() => portcoin.balanceOf(accounts[1]) )
+        .then((response) => expect(+response).toBe(1))
+        .then(() => {
+          var ticket = 1;
+          var signature = web3.eth.accounts.sign(("00" + ticket).slice(-3), eventAddress.getPrivateKeyString());
+          return mayor.attend(ticket, signature.signature);
+        })
+        .then(()=>expect(true).toBe(false))
+        .catch(error => expect(error.message).toBe("VM Exception while processing transaction: revert"))
     });
 });

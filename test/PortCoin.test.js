@@ -64,8 +64,8 @@ contract('PortCoin', function(accounts) {
         .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
         .then(result => expect(result).toBe(true))
 
-        .then(() => mayor.attend(1, signature.signature, { from: accounts[1] }))
-        .then(result => console.log("GAS: " + result.receipt.gasUsed))
+        .then(() => mayor.attend(1, signature.r, signature.s, signature.v, { from: accounts[1] }))
+        .then(result => console.log("GAS (first ticket): " + result.receipt.gasUsed))
         .then(() => portcoin.balanceOf(accounts[1]) )
         .then((response) => expect(+response).toBe(1))
         .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 1))
@@ -73,8 +73,8 @@ contract('PortCoin', function(accounts) {
         .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
         .then(result => expect(result).toBe(true))
 
-        .then(() => mayor.attend(2, sig2.signature, { from: accounts[1] }))
-        .then(result => console.log("GAS: " + result.receipt.gasUsed))
+        .then(() => mayor.attend(2, sig2.r, sig2.s, sig2.v, { from: accounts[1] }))
+        .then(result => console.log("GAS (second ticket): " + result.receipt.gasUsed))
         .then(() => portcoin.balanceOf(accounts[1]) )
         .then((response) => expect(+response).toBe(2))
         .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 1))
@@ -82,7 +82,7 @@ contract('PortCoin', function(accounts) {
         .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
         .then(result => expect(result).toBe(false))
 
-        .then(() => mayor.attend(1, signature.signature))
+        .then(() => mayor.attend(1, signature.r, signature.s, signature.v))
         .then(()=>expect(true).toBe(false))
         .catch(error => expect(error.message).toBe("VM Exception while processing transaction: revert"))
     });

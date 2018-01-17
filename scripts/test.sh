@@ -6,7 +6,7 @@ if [ ! $trpc_running ]; then
   echo "Starting our own testrpc node instance"
   # we give each account 1M ether, needed for high-value tests
   ganache-cli \
-    --port 9545 \
+    --port 7545 \
     --account="0x2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501200,1000000000000000000000000"  \
     --account="0x2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501201,1000000000000000000000000"  \
     --account="0x2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501202,1000000000000000000000000"  \

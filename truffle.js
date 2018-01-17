@@ -11,12 +11,12 @@ process.argv.forEach((arg,i) => {
   }
 })
 
-var maxgas = 4612388;
+var maxgas = 1300000;
 
 networks = {
   development: {
     host: "localhost",
-    port: 9545,
+    port: 7545,
     network_id: "*", // Match any network id
     gas: maxgas
   }

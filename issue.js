@@ -11,7 +11,7 @@ var args = argv.option([{
   type:'string'
 }]).run();
 
-const network = truffle.networks['mainnet'];
+const network = truffle.networks[truffle.network];
 //console.log(network);
 
 PortCoin.setProvider(network.provider)
@@ -20,7 +20,7 @@ var [to, amount] = args.targets;
 
 console.log("Issuing " + amount + " to " + to);
 
-PortCoin.at('0x8ed3ba9c4028865f77b3c8917a2003131709fbee')
+PortCoin.deployed()
 .then(instance => instance.issue(to, amount, {
   from:network.from
 }))

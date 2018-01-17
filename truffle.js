@@ -11,7 +11,7 @@ process.argv.forEach((arg,i) => {
   }
 })
 
-if(network) {
+if(network && network !== 'development') {
   console.log("Configuring network: " + network);
   var key = fs.readFileSync(require('os').homedir() + '/.demo.private.key', 'utf8');
   var wallet = Wallet.fromPrivateKey(Buffer.from(key.substring(2), 'hex'));

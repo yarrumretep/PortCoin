@@ -77,6 +77,8 @@ contract('PortCoin', function(accounts) {
         .then(result => expect(result).toBe(false))
         .then(() => mayor.isValidTicket(eventAddress.getAddressString(), 2))
         .then(result => expect(result).toBe(false))
-        .then(()=>expect(() => mayor.attend(1, signature.r, signature.s, signature.v, { from: accounts[1] })).toThrow("VM Exception while processing transaction: revert"))
+        .then(() => mayor.attend(1, signature.r, signature.s, signature.v, { from: accounts[1] }))
+        .then(()=>expect(true).toBe(false))
+        .catch(e=>expect(e.message).toBe("VM Exception while processing transaction: revert"))
     });
 });

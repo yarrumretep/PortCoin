@@ -11,8 +11,6 @@ process.argv.forEach((arg,i) => {
   }
 })
 
-var maxgas = 1300000;
-
 if(network) {
   console.log("Configuring network: " + network);
   var key = fs.readFileSync(require('os').homedir() + '/.demo.private.key', 'utf8');
@@ -22,13 +20,15 @@ if(network) {
     'mainnet': 'https://mainnet.infura.io/bOyWfPGcs8jj2g9UXNYr',
     'kovan': 'https://kovan.infura.io/bOyWfPGcs8jj2g9UXNYr'
   }
+  var ids = {
+    'mainnet':'1',
+    'kovan':'42'
+  }
   networks = {
     [network]: {
       provider: new WalletProvider(wallet, nodes[network]),
       from: wallet.getAddressString(),
-      network_id: "*", // Match any network id
-      gasPrice:20000000000,
-      gas: maxgas
+      network_id: ids[network]
     }
   };
 } else {
@@ -38,7 +38,6 @@ if(network) {
       host: "localhost",
       port: 7545,
       network_id: "*", // Match any network id
-      gas: maxgas
     }
   }
   network = 'development';

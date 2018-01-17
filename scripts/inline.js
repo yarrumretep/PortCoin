@@ -40,6 +40,7 @@ var root = './contracts';
 var out = './inlined';
 mkdirp.sync(out);
 fs.readdirSync(root).forEach(file => {
+  done = {};
   var code = "pragma solidity ^0.4.11;\n" + inline(root + "/" + file);
   fs.writeFileSync(out + "/" + file, code);
 })
